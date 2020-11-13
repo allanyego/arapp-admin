@@ -9,7 +9,6 @@ import {
   List,
   Modal,
   Icon,
-  Badge,
   Panel,
 } from "rsuite";
 
@@ -174,7 +173,13 @@ function EntityDrawer({ entity, clearSelected, onUpdate, isUpdating }) {
           </Drawer.Title>
         </Drawer.Header>
         <Drawer.Body>
-          {!isActive && <Badge />}
+          {!isActive && (
+            <>
+              <Icon icon="ban" className="ban-icon" />
+              {"  "}Account inactive
+            </>
+          )}
+
           {entity &&
             (entity.title ? (
               <GuideBody guide={entity} />
