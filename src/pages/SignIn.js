@@ -7,7 +7,7 @@ function SignIn() {
   return (
     <Page align="middle" justify="center">
       <FlexboxGrid.Item componentClass={Col} xs={24} sm={12} md={8}>
-        <Panel shaded>
+        <Panel bordered>
           <h1 className="text-center">Sign in</h1>
           <SignInForm />
         </Panel>

@@ -29,6 +29,11 @@ function Main() {
   return (
     <Switch>
       <Route
+        path={`${path}/change-password`}
+        component={ChangePassword}
+        exact
+      />
+      <Route
         path={`${path}/users`}
         render={() => {
           return currentUser.requiresPasswordChange ? (
@@ -48,8 +53,8 @@ function Main() {
             <Guides />
           );
         }}
+        exact
       />
-      <Route path={`${path}/change-password`} component={ChangePassword} />
       <Route render={() => <Redirect to={`${url}/guides`} />} />
     </Switch>
   );
@@ -112,19 +117,19 @@ function App() {
       >
         <ProfileDrawer isOpen={isProfileOpen} onClose={closeProfile} />
         <AdminDrawer isOpen={isAdminOpen} onClose={closeAdmin} />
-        {authenticating ? (
-          <PageLoader />
-        ) : (
-          <Container className="h100 page-container">
-            <Router>
-              <Header>
-                <AppBar
-                  onSelect={setActive}
-                  activeKey={active}
-                  onProfileClick={toggleProfile}
-                  onAdminClick={toggleAdmin}
-                />
-              </Header>
+        <Container className="h100 page-container">
+          <Router>
+            <Header>
+              <AppBar
+                onSelect={setActive}
+                activeKey={active}
+                onProfileClick={toggleProfile}
+                onAdminClick={toggleAdmin}
+              />
+            </Header>
+            {authenticating ? (
+              <PageLoader />
+            ) : (
               <Content className="d-flex">
                 <Suspense fallback={<PageLoader />}>
                   <Switch>
@@ -153,9 +158,9 @@ function App() {
                   </Switch>
                 </Suspense>
               </Content>
-            </Router>
-          </Container>
-        )}
+            )}
+          </Router>
+        </Container>
       </AppContext.Provider>
     </div>
   );

@@ -69,18 +69,21 @@ function ChangePassword() {
         <TextField
           label="Old password"
           name="password"
+          type="password"
           errorMessage={formError.password}
         />
 
         <TextField
           label="New password"
           name="newPassword"
+          type="password"
           errorMessage={formError.newPassword}
         />
 
         <TextField
           label="Confirm new password"
           name="confirmPassword"
+          type="password"
           errorMessage={formError.confirmPassword}
         />
 

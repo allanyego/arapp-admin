@@ -78,6 +78,7 @@ function SignIn() {
         <TextField
           label="Password"
           name="password"
+          type="password"
           errorMessage={formError.password}
         />
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Col, FlexboxGrid, Icon, Nav } from "rsuite";
 import EntityDrawer from "../components/EntityDrawer";
 import Helper from "../components/Helper";
@@ -129,6 +130,7 @@ function Users() {
 
       <FlexboxGrid.Item componentClass={Col} xs={24} sm={24} md={16}>
         <h1 className="text-center">Users</h1>
+        <Link to="/app/change-password">Change pass</Link>
         <CustomNav
           appearance="subtle"
           active={active}
