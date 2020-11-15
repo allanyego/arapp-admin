@@ -50,22 +50,22 @@ function GuideBody({ guide }) {
     return null;
   }
 
-  const { body, links, tags } = guide;
+  const { body, links, createdAt } = guide;
   return (
     <>
+      <small>
+        <i>
+          Posted: <strong>{dayjs(createdAt).format("MMM D, YYYY")}</strong>
+        </i>
+      </small>
       <p>{body}</p>
-      <div
+      <h6
         style={{
-          margin: "0.75em 0",
+          marginTop: "0.75em 0",
         }}
       >
-        {tags.map((tag, index) => (
-          <Tag key={index} color="blue">
-            {tag}
-          </Tag>
-        ))}
-      </div>
-      <h6>External links</h6>
+        External links
+      </h6>
       <List>
         {links.map((link, index) => {
           const [text, url] = link.split(",").map((lnk) => lnk.trim());
