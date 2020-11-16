@@ -2,20 +2,14 @@ import request, { constructAuthHeader } from "./request";
 
 const BASE_URL = "/users";
 
-export async function getUsers(
-  token,
-  { username = null, user = false, unset = false } = {}
-) {
+export async function getUsers(token, { username = null, user = false } = {}) {
   let queryParams = "";
   if (username && user) {
     queryParams += `?username=${encodeURIComponent(username)}&user=true`;
   } else if (username) {
-    queryParams +=
-      `?username=${encodeURIComponent(username)}` + unset ? "&unset=true" : "";
+    queryParams += `?username=${encodeURIComponent(username)}`;
   } else if (user) {
     queryParams += `?user=true`;
-  } else if (unset) {
-    queryParams += "?unset=true";
   }
 
   return await request(`${BASE_URL + queryParams}`, {

@@ -16,7 +16,6 @@ import entityMapper from "./helpers/entity-mapper";
 const VIEWS = {
   user: "user",
   providers: "providers",
-  unset: "unset",
 };
 
 function CustomNav({ active, onSelect, ...props }) {
@@ -28,9 +27,6 @@ function CustomNav({ active, onSelect, ...props }) {
       <Nav.Item eventKey={VIEWS.user} icon={<Icon icon="user" />}>
         Users
       </Nav.Item>
-      <Nav.Item eventKey={VIEWS.unset} icon={<Icon icon="user-times" />}>
-        Not set
-      </Nav.Item>
     </Nav>
   );
 }
@@ -40,20 +36,17 @@ function Users() {
   const [selected, setSelected] = useState(null);
   const [users, setUsers] = useState(null);
   const [providers, setProviders] = useState(null);
-  const [unsetUsers, setUnset] = useState(null);
   const [isUpdating, setUpdating] = useState(false);
   const { currentUser } = useAppContext();
   const { isMounted, setMounted } = useMounted();
   const { onError } = useToastManager();
 
-  const fetchUsers = async (opts = { user: false, unset: false }) => {
+  const fetchUsers = async (opts = { user: false }) => {
     try {
       const { data } = await getUsers(currentUser.token, opts);
       if (isMounted) {
-        const { user, unset } = opts;
-        user && setUsers(data);
-        unset && setUnset(data);
-        !unset && !user && setProviders(data);
+        const { user } = opts;
+        user ? setUsers(data) : setProviders(data);
       }
     } catch (error) {
       onError(error.message);
@@ -62,9 +55,7 @@ function Users() {
   const clearSelected = () => setSelected(null);
   const updateUser = async (id) => {
     const toUpdate =
-      users.find((u) => u._id === id) ||
-      unsetUsers.find((u) => u._id === id) ||
-      providers.find((u) => u._id === id);
+      users.find((u) => u._id === id) || providers.find((u) => u._id === id);
     if (!toUpdate) {
       return;
     }
@@ -79,15 +70,11 @@ function Users() {
       setUpdating(false);
       clearSelected();
 
-      if (!toUpdate.accountType) {
-        setUnset([...unsetUsers.map(entityMapper(id, { active: newState }))]);
-      } else {
-        toUpdate.accountType === USER.ACCOUNT_TYPES.USER
-          ? setUsers([...users.map(entityMapper(id, { active: newState }))])
-          : setProviders([
-              ...providers.map(entityMapper(id, { active: newState })),
-            ]);
-      }
+      toUpdate.accountType === USER.ACCOUNT_TYPES.USER
+        ? setUsers([...users.map(entityMapper(id, { active: newState }))])
+        : setProviders([
+            ...providers.map(entityMapper(id, { active: newState })),
+          ]);
     } catch (error) {
       setUpdating(false);
       onError(error.message);
@@ -101,11 +88,6 @@ function Users() {
       case VIEWS.user:
         return fetchUsers({
           user: true,
-        });
-
-      case VIEWS.unset:
-        return fetchUsers({
-          unset: true,
         });
 
       default:
@@ -140,14 +122,7 @@ function Users() {
         <hr />
         <Helper />
         <div>
-          {active === VIEWS.unset ? (
-            <UsersTable
-              key="unset-table"
-              users={unsetUsers}
-              fetchUsers={wrapFetch(VIEWS.unset)}
-              onRowClick={setSelected}
-            />
-          ) : active === VIEWS.user ? (
+          {active === VIEWS.user ? (
             <UsersTable
               key="user-table"
               users={users}
